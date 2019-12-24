@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>拍照</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+
+    <script type="text/javascript" src="../script/aui-toast.js" ></script>
+
+    <style>
+        input[type=file]{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
+            font-size: 50rem;
+        }
+
+    </style>
+</head>
+<body>
+<header class="aui-bar aui-bar-nav " id="Head" style="display: none">
+    <a class="aui-pull-left aui-btn" id="Back">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>拍照
+</header>
+<!--for Android-->
+<video id="video" width="100%" height="100%" autoplay="autoplay" ></video>
+<!--for iOS-->
+<div class="aui-content" id="iOSTake">
+    <div class="aui-btn aui-btn-warning aui-margin-10" id="Select"><i class="aui-iconfont aui-icon-camera aui-text-white"></i>打开相机拍照</div>
+    <input type="file" capture="camera" accept="image/*"  name="cameraInput"   id="iOSCamera" class="sign_file"/>
+</div>
+
+
+<img class="img_wrap" style="padding:10px " src="" style="display: none;">
+
+
+<footer class="aui-bar aui-bar-tab" id="footer" >
+    <div class="aui-bar-tab-item" tapmode style="width: 40%" id="Cancel">
+        <div class="aui-bar-tab-item aui-text-info">取消</div>
+    </div>
+    <div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;" id="Picture">
+        <i class="aui-iconfont aui-icon-camera aui-text-white"></i> 拍照</a></div>
+</footer>
+
+<footer class="aui-bar aui-bar-tab aui-border-t" id="iOSfooter" style="display: none">
+    <div class="aui-bar-tab-item" tapmode style="width: 40%" id="iOSCancel">
+        <div class="aui-bar-tab-item aui-text-info"> 取消</div>
+    </div>
+    <div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;" id="iOSSave"><i class="aui-iconfont aui-icon-image aui-text-white"></i> 保存</div>
+</footer>
+
+</body>
+
+
+<!--weixin JS-SDK-->
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+<script type="text/javascript">
+
+    var u = navigator.userAgent;
+    var ua = navigator.userAgent.toLowerCase();
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
+    if(ua.match(/MicroMessenger/i)=="micromessenger") { //微信内置浏览器
+       // alert("微信中打开了！");
+        $("#iOSTake").hide();
+       weixinTakePhoto();
+       // $(location).attr('href', './QueryExpress.php');
+    }else{
+        if(isiOS){
+            $("#Head").show();
+            $("#footer").hide()
+            $("#video").hide();
+            $(".img_wrap").show();
+            iOSTakePhoto();
+        }else if(isAndroid){
+            $("#iOSTake").hide();
+            androidTakePhoto();
+        }else{
+            $("#iOSTake").hide();
+
+        }
+
+    }
+
+    function  weixinTakePhoto() {
+
+        var url= '/payProxy/weixinConfig.php';
+        $.getJSON(url, function(data) {
+            if(data.state == 200){
+                wx.config({
+                    debug: true,
+                    appId: data.appid,
+                    timestamp: data.timestamp,
+                    nonceStr: data.noncestr,
+                    signature: data.sign,
+                    jsApiList: ["chooseImage",]
+                });
+            }else{
+                alert("微信设置信息失败");
+            }
+        });
+
+        wx.ready(function () {
+            // 在这里调用 API
+            wx.chooseImage({
+                count: 1, // 默认9
+                sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                success: function (res) {
+                    var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                }
+            });
+        });
+
+    }
+
+
+
+    function  androidTakePhoto() {
+        var video = document.getElementById("video");
+        var errocb = function () {
+            console.log('sth wrong!');
+        }
+
+        if (navigator.getUserMedia) { // 标准的API
+            alert("navigator.getUserMedia");
+            navigator.getUserMedia({ "video": true }, function (stream) {
+//                video.src = stream;
+                video.src = window.webkitURL.createObjectURL(stream);
+                video.play();
+            }, errocb);
+        } else if (navigator.webkitGetUserMedia) { // WebKit 核心的API
+            alert("navigator.webkitGetUserMedia");
+            navigator.webkitGetUserMedia({ "video": true }, function (stream) {
+//                video.src = window.webkitURL.createObjectURL(stream);
+                video.src = stream;
+                video.play();
+            }, errocb);
+
+
+        } else if(navigator.mozGetUserMedia) {
+            alert("navigator.mozGetUserMedia");
+        }else if(navigator.msGetUserMedia) {
+            alert(navigator.msGetUserMedia);
+        }else{
+            alert('your browser does not support getUserMedia');
+        }
+    }
+
+    function iOSTakePhoto() {
+
+        $("#iOSCancel").click(function () {
+            $(location).attr('href', './change_user_info.html');
+        })
+
+
+        var demo_h5_upload_ops = {
+            init:function(){
+                this.eventBind();
+            },
+            eventBind:function(){
+                var that = this;
+                $("#iOSCamera").change(function(){
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        that.compress(this.result);
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                    //show footer bar
+                    $("#iOSfooter").show();
+                    //click save button
+                    $("#iOSSave").click(function () {
+                        var toast = new auiToast();
+                        var toast1 = new auiToast();
+                        toast.loading({
+                            title:"上传中...",
+                            duration:1000
+                        },function(ret){
+                            console.log(ret);
+                            setTimeout(function(){
+                                toast.hide();
+                                toast1.success({
+                                    title:"成功！",
+                                    duration:1000
+                                });
+                                $(location).attr('href', './change_user_info.html');
+                            }, 1000)
+                        });
+                    })
+
+                });
+
+            },
+            compress : function (res) {
+                var that = this;
+                var img = new Image(),
+                    maxH = 250;
+
+                img.onload = function () {
+                    var cvs = document.createElement('canvas'),
+                        ctx = cvs.getContext('2d');
+
+                    if(img.height > maxH) {
+                        img.width *= maxH / img.height;
+                        img.height = maxH;
+                    }
+                    cvs.width = img.width;
+                    cvs.height = img.height;
+
+                    ctx.clearRect(0, 0, cvs.width, cvs.height);
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+                    var dataUrl = cvs.toDataURL('image/jpeg', 1);
+                    $(".img_wrap").attr("src",dataUrl);
+                    $(".img_wrap").show();
+                    // 上传略
+                    that.upload( dataUrl );
+                };
+
+                img.src = res;
+            },
+            upload:function( image_data ){
+                /*这里写上传方法,图片流是base64_encode的*/
+            }
+        };
+
+
+        $(document).ready( function(){
+            demo_h5_upload_ops.init();
+        } );
+    }
+
+
+
+
+    $(document).on('click','#Picture',function() {
+
+        $("#Head").show();
+
+        video.width = 195;
+        video.height = 260;
+
+        var img = video,
+            maxH = 260;
+        var cvs = document.createElement('canvas'),
+            ctx = cvs.getContext('2d');
+
+        if(img.height > maxH) {
+            img.width *= maxH / img.height;
+            img.height = maxH;
+        }
+        cvs.width = img.width;
+        cvs.height = img.height;
+
+
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        var dataUrl = cvs.toDataURL('image/jpeg', 1);
+        $(".img_wrap").attr("src",dataUrl);
+        $(".img_wrap").show();
+
+
+       // context.drawImage(video, 10, 10, 640, 960);
+
+
+
+        $("#video").hide();
+
+        $("#Cancel").html(" <div class=\"aui-bar-tab-item aui-text-info\">重拍</div>");
+        $("#Cancel").attr('id','reTake');
+
+        $(this).attr("id","Save");
+        $(this).html("保存");
+        $(this).class('aui-bar-tab-item aui-bg-warning aui-text-white');
+
+
+    });
+
+    $(document).on('click','#reTake',function() {
+        $(location).attr('href', './capture_photo.html');
+    });
+
+
+    $(document).on('click','#Save',function() {
+        var toast = new auiToast();
+        var toast1 = new auiToast();
+        toast.loading({
+            title:"上传中...",
+            duration:1000
+        },function(ret){
+            console.log(ret);
+            setTimeout(function(){
+                toast.hide();
+                toast1.success({
+                    title:"成功！",
+                    duration:1000
+                });
+                $(location).attr('href', './change_user_info.html');
+            }, 1000)
+        });
+    });
+
+    $(document).on('click','#Cancel',function() {
+        $(location).attr('href', './change_user_info.html');
+    })
+
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+        $("#Back").click(function () {
+            $(location).attr('href', './change_user_info.html');
+        })
+
+</script>
+
+
+</html>
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <title>修改用户信息</title>
+</head>
+<body>
+
+<header class="aui-bar aui-bar-nav">
+    <a class="aui-pull-left aui-btn" id="Back">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>修改个人信息
+</header>
+
+<section class="aui-content">
+    <ul class="aui-list aui-list-in aui-margin-b-15">
+        <li class="aui-list-item" tapmode onclick="openActionsheet()">
+            <div class="aui-list-item-label-icon">
+                <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+            </div>
+            <div class="aui-list-item-inner aui-list-item-arrow">
+                <div class="aui-list-item-title">修改头像</div>
+            </div>
+        </li>
+        <!--<li class="aui-list-item">-->
+            <!--<div class="aui-list-item-label-icon">-->
+                <!--<i class="aui-iconfont aui-icon-like aui-text-danger"></i>-->
+            <!--</div>-->
+            <!--<div class="aui-list-item-inner aui-list-item-arrow">-->
+                <!--<div class="aui-list-item-title">绑定手机</div>-->
+            <!--</div>-->
+        <!--</li>-->
+
+    </ul>
+</section>
+</body>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/aui-actionsheet.js" ></script>
+<script type="text/javascript">
+    apiready = function(){
+        api.parseTapmode();
+    }
+    var actionsheet = new auiActionsheet();
+    function openActionsheet(){
+        actionsheet.init({
+            frameBounces:true,//当前页面是否弹动，（主要针对安卓端）
+            title:"修改头像",
+            cancelTitle:'取消',
+            // buttons:['拍照','图库选择']
+            buttons:['图库选择']
+        },function(ret){
+            $(location).attr('href', './upload_photo_from_local.html');
+            // if(ret.buttonIndex == 1){
+            //     $(location).attr('href', './capture_photo.html');
+            //     //  document.getElementById("button-index").textContent = ret.buttonIndex;
+            //     //  document.getElementById("button-title").textContent = ret.buttonTitle;
+            // }else if(ret.buttonIndex == 2){
+            //     $(location).attr('href', './upload_photo_from_local.html');
+            // }
+        })
+    }
+</script>
+
+<script type="text/javascript">
+    $("#Back").click(function () {
+        $(location).attr('href', '../php/My.php');
+    })
+
+</script>
+
+</html>

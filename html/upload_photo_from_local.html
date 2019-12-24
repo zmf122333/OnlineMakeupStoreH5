@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>上传本地图片</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js" ></script>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        input[type=file]{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
+            font-size: 50rem;
+        }
+
+    </style>
+
+</head>
+<body>
+<header class="aui-bar aui-bar-nav">
+    <a class="aui-pull-left aui-btn" id="Back">
+        <span class="aui-iconfont aui-icon-left"></span>
+    </a>选择手机相册图片
+</header>
+
+<div class="aui-content">
+    <div class="aui-btn aui-btn-info aui-margin-10" id="Select"><i class="aui-iconfont aui-icon-plus aui-text-white"></i>选择要上传的图片</div>
+    <input id="upload" type="file" accept="image/*;">
+</div>
+<img class="img_wrap" style="padding:10px " src="">
+
+<footer class="aui-bar aui-bar-tab aui-border-t" id="footer" style="display: none">
+    <div class="aui-bar-tab-item" tapmode style="width: 40%" id="Cancel">
+        <div class="aui-bar-tab-item aui-text-info"> 取消</div>
+    </div>
+    <div class="aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;" id="Save"><i class="aui-iconfont aui-icon-image aui-text-white"></i> 保存</div>
+</footer>
+
+
+</body>
+
+<script type="text/javascript" src="../script/aui-toast.js" ></script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+    $("#Back").click(function () {
+        $(location).attr('href', './change_user_info.html');
+    })
+    $("#Cancel").click(function () {
+        $(location).attr('href', './change_user_info.html');
+    })
+
+
+
+
+
+    var demo_h5_upload_ops = {
+        init:function(){
+            this.eventBind();
+        },
+        eventBind:function(){
+            var that = this;
+
+            $("#upload").change(function(){
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    that.compress(this.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+
+                //show footer bar
+                $("#footer").show();
+                //click save button
+                $("#Save").click(function () {
+
+                })
+            });
+
+
+
+        },
+        compress : function (res) {
+            var that = this;
+            var img = new Image(),
+                maxH = 250;
+
+            img.onload = function () {
+                var cvs = document.createElement('canvas'),
+                    ctx = cvs.getContext('2d');
+
+                if(img.height > maxH) {
+                    img.width *= maxH / img.height;
+                    img.height = maxH;
+                }
+                cvs.width = img.width;
+                cvs.height = img.height;
+
+                ctx.clearRect(0, 0, cvs.width, cvs.height);
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                var dataUrl = cvs.toDataURL('image/jpeg', 1);
+                $(".img_wrap").attr("src",dataUrl);
+                $(".img_wrap").show();
+                // 上传略
+                var toast = new auiToast();
+                var url='../php/SavePic.php';
+                console.error(dataUrl);
+                $.post(url,{imgBase64:dataUrl},function(data){
+                    if($.trim(data)==200){
+                        toast.success({
+                            title:"上传成功！",
+                            duration:1000
+                        });
+                    }else{
+                        toast.fail({
+                            title:"上传失败，请稍后重试！",
+                            duration:1000
+                        });
+                    }
+                });
+                toast.hide();
+                $(location).attr('href', './change_user_info.html');
+
+            };
+
+            img.src = res;
+        }
+    };
+
+
+    $(document).ready( function(){
+        demo_h5_upload_ops.init();
+    } );
+</script>
+
+</html>
