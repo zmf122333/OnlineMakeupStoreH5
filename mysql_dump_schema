@@ -1,0 +1,683 @@
+-- MySQL dump 10.13  Distrib 5.6.38, for Linux (x86_64)
+--
+-- Host: localhost    Database: XXXXX
+-- ------------------------------------------------------
+-- Server version	5.6.38
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `account`
+--
+
+DROP TABLE IF EXISTS `account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `account` (
+  `uid` char(11) COLLATE utf8_bin NOT NULL,
+  `userName` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `passWord` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `registerTime` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `bindTime` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `account`
+--
+
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bonus_settlement`
+--
+
+DROP TABLE IF EXISTS `bonus_settlement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bonus_settlement` (
+  `time` char(19) NOT NULL,
+  `uid` char(18) NOT NULL,
+  `bonus` varchar(45) DEFAULT NULL,
+  `channel` varchar(45) DEFAULT '0' COMMENT '0 - bank\n1 - weixin\n2 - alipay',
+  `status` char(1) DEFAULT '0' COMMENT '0 - settlement\n1 - paid\n2 - close',
+  PRIMARY KEY (`time`,`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bonus_settlement`
+--
+
+LOCK TABLES `bonus_settlement` WRITE;
+/*!40000 ALTER TABLE `bonus_settlement` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bonus_settlement` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cart` (
+  `uid` char(11) DEFAULT NULL,
+  `goodId` char(18) DEFAULT NULL,
+  `time` varchar(45) DEFAULT NULL,
+  `status` char(1) DEFAULT '0' COMMENT '0 - unbill\n1 - billed'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart`
+--
+
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `coupon`
+--
+
+DROP TABLE IF EXISTS `coupon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `coupon` (
+  `couponId` char(8) CHARACTER SET latin1 NOT NULL,
+  `money` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `shortDesc` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `longDesc` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  `constrainType` varchar(8) CHARACTER SET latin1 DEFAULT NULL,
+  `expire` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `thumbnail` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`couponId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `coupon`
+--
+
+LOCK TABLES `coupon` WRITE;
+/*!40000 ALTER TABLE `coupon` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coupon` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `good`
+--
+
+DROP TABLE IF EXISTS `good`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `good` (
+  `goodId` char(18) CHARACTER SET latin1 NOT NULL,
+  `category` varchar(8) CHARACTER SET latin1 DEFAULT NULL,
+  `comments` varchar(45) COLLATE utf8_bin DEFAULT '0' COMMENT '被用户评论次数',
+  `sales` varchar(45) COLLATE utf8_bin DEFAULT '0' COMMENT '被用户下单次数',
+  `thumbUps` varchar(45) COLLATE utf8_bin DEFAULT '0' COMMENT '被点赞次数',
+  `favorites` varchar(45) COLLATE utf8_bin DEFAULT '0' COMMENT '被收藏次数',
+  `promotionInfo` varchar(45) COLLATE utf8_bin DEFAULT NULL COMMENT '商品促销信息',
+  `price` varchar(12) CHARACTER SET latin1 DEFAULT NULL,
+  `promotionPrice` varchar(12) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `shortDesc` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `longDesc` varchar(256) COLLATE utf8_bin DEFAULT NULL,
+  `brand` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `net` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `selfLife` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `color` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `model` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `special` varchar(1) COLLATE utf8_bin DEFAULT NULL,
+  `effect` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `origin` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`goodId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `order`
+--
+
+DROP TABLE IF EXISTS `order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `order` (
+  `orderId` varchar(45) CHARACTER SET latin1 NOT NULL,
+  `uid` char(11) CHARACTER SET latin1 DEFAULT NULL,
+  `ogId` char(11) CHARACTER SET latin1 DEFAULT NULL,
+  `freight` varchar(12) CHARACTER SET latin1 DEFAULT '0' COMMENT '运费',
+  `discount` varchar(12) CHARACTER SET latin1 DEFAULT '1' COMMENT '折扣率',
+  `deduct` varchar(45) COLLATE utf8_bin DEFAULT '0',
+  `status` char(1) CHARACTER SET latin1 DEFAULT '0' COMMENT '0 - 未支付\n1 - 已支付\n2 - 发货中\n3 - 已收货\n4 - 关闭',
+  PRIMARY KEY (`orderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order`
+--
+
+LOCK TABLES `order` WRITE;
+/*!40000 ALTER TABLE `order` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orderedGoods`
+--
+
+DROP TABLE IF EXISTS `orderedGoods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orderedGoods` (
+  `ogId` char(11) DEFAULT NULL,
+  `uid` char(11) DEFAULT NULL,
+  `goodId` char(18) DEFAULT NULL,
+  `goodAmount` char(11) DEFAULT '0',
+  `time` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orderedGoods`
+--
+
+LOCK TABLES `orderedGoods` WRITE;
+/*!40000 ALTER TABLE `orderedGoods` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orderedGoods` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pay`
+--
+
+DROP TABLE IF EXISTS `pay`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pay` (
+  `orderId` varchar(45) CHARACTER SET latin1 NOT NULL,
+  `uid` char(11) CHARACTER SET latin1 DEFAULT NULL,
+  `money` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `payChannel` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `status` char(1) CHARACTER SET latin1 DEFAULT NULL,
+  `device` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`orderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pay`
+--
+
+LOCK TABLES `pay` WRITE;
+/*!40000 ALTER TABLE `pay` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pay` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `point`
+--
+
+DROP TABLE IF EXISTS `point`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `point` (
+  `pointId` char(8) CHARACTER SET latin1 NOT NULL,
+  `shortDesc` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `longDesc` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  `content` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `point` char(9) CHARACTER SET latin1 DEFAULT NULL,
+  PRIMARY KEY (`pointId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `point`
+--
+
+LOCK TABLES `point` WRITE;
+/*!40000 ALTER TABLE `point` DISABLE KEYS */;
+/*!40000 ALTER TABLE `point` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shareMoney`
+--
+
+DROP TABLE IF EXISTS `shareMoney`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `shareMoney` (
+  `uid` char(11) NOT NULL,
+  `todayMoney` varchar(45) DEFAULT '0',
+  `thisMonthMoney` varchar(45) DEFAULT '0',
+  `allMoney` varchar(45) DEFAULT '0',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `shareMoney`
+--
+
+LOCK TABLES `shareMoney` WRITE;
+/*!40000 ALTER TABLE `shareMoney` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shareMoney` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sharePersonUp`
+--
+
+DROP TABLE IF EXISTS `sharePersonUp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sharePersonUp` (
+  `uid` char(11) NOT NULL,
+  `fatherUid` char(11) DEFAULT NULL,
+  `shareTime` varchar(45) DEFAULT NULL,
+  `fatherSentRedBag` varchar(45) DEFAULT NULL,
+  `fatherSentCoupon` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sharePersonUp`
+--
+
+LOCK TABLES `sharePersonUp` WRITE;
+/*!40000 ALTER TABLE `sharePersonUp` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sharePersonUp` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shareWithDrawLog`
+--
+
+DROP TABLE IF EXISTS `shareWithDrawLog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `shareWithDrawLog` (
+  `uid` int(11) NOT NULL,
+  `withDrawMoney` varchar(45) DEFAULT NULL,
+  `date` varchar(45) DEFAULT NULL,
+  `channel` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `shareWithDrawLog`
+--
+
+LOCK TABLES `shareWithDrawLog` WRITE;
+/*!40000 ALTER TABLE `shareWithDrawLog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `shareWithDrawLog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `uid` char(11) CHARACTER SET latin1 NOT NULL,
+  `vipId` char(2) CHARACTER SET latin1 DEFAULT '0',
+  `phone` char(11) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `addr_province` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `addr_province_id` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `addr_city` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `addr_city_id` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `addr_district` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `addr_district_id` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `addr_street` varchar(128) CHARACTER SET utf8 DEFAULT NULL,
+  `redEnvelope` varchar(12) CHARACTER SET latin1 DEFAULT '0',
+  `point` varchar(12) CHARACTER SET latin1 DEFAULT '0',
+  `coupons` varchar(12) CHARACTER SET latin1 DEFAULT '0',
+  `share` varchar(8) CHARACTER SET latin1 DEFAULT '0',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vip`
+--
+
+DROP TABLE IF EXISTS `vip`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vip` (
+  `vipId` char(2) CHARACTER SET latin1 NOT NULL,
+  `level` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `period` varchar(3) COLLATE utf8_bin DEFAULT NULL,
+  `number` varchar(3) COLLATE utf8_bin DEFAULT NULL,
+  `condition` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `discount` char(3) CHARACTER SET latin1 DEFAULT NULL,
+  `shortRight` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  `longRight` varchar(128) COLLATE utf8_bin DEFAULT NULL,
+  `rebate` char(4) CHARACTER SET latin1 DEFAULT NULL,
+  `bonus` varchar(4) COLLATE utf8_bin DEFAULT '0',
+  `shareMin` varchar(3) CHARACTER SET latin1 DEFAULT NULL,
+  `shareMax` varchar(3) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`vipId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `vip_bak`
+--
+
+DROP TABLE IF EXISTS `vip_bak`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `vip_bak` (
+  `vipId` char(2) NOT NULL,
+  `level` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `period` varchar(3) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `number` varchar(3) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `condition` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `discount` char(3) DEFAULT NULL,
+  `shortRight` varchar(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `longRight` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `rebate` char(4) DEFAULT NULL,
+  `bonus` varchar(4) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '0',
+  `shareMin` varchar(3) DEFAULT NULL,
+  `shareMax` varchar(3) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Dumping events for database 'XXXX'
+--
+/*!50106 SET @save_time_zone= @@TIME_ZONE */ ;
+/*!50106 DROP EVENT IF EXISTS `change_invalid_order_status_event` */;
+DELIMITER ;;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;;
+/*!50003 SET character_set_client  = utf8 */ ;;
+/*!50003 SET character_set_results = utf8 */ ;;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;;
+/*!50003 SET @saved_time_zone      = @@time_zone */ ;;
+/*!50003 SET time_zone             = 'SYSTEM' */ ;;
+/*!50106 CREATE*/ /*!50117 DEFINER=`root`@`localhost`*/ /*!50106 EVENT `change_invalid_order_status_event` ON SCHEDULE EVERY 1 SECOND STARTS '2018-01-26 12:24:24' ON COMPLETION PRESERVE ENABLE DO BEGIN
+       CALL `XXXX`.`change_invalid_order_status`();
+    END */ ;;
+/*!50003 SET time_zone             = @saved_time_zone */ ;;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;;
+/*!50003 SET character_set_results = @saved_cs_results */ ;;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;;
+DELIMITER ;
+/*!50106 SET TIME_ZONE= @save_time_zone */ ;
+
+--
+-- Dumping routines for database 'XXXX'
+--
+/*!50003 DROP FUNCTION IF EXISTS `getAreaPeersNum` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getAreaPeersNum`(areaId char(8),areaType int,_vipId int) RETURNS char(45) CHARSET utf8
+BEGIN
+	if areaType=1 then
+		RETURN(SELECT count(uid) FROM XXXX.user where vipId=_vipId and addr_province_id=areaId);
+    end if;
+    if areaType=2 then
+		RETURN(SELECT count(uid) FROM XXXX.user where vipId=_vipId and addr_city_id=areaId);
+    end if;
+    if areaType=3 then
+		RETURN(SELECT count(uid) FROM XXXX.user where vipId=_vipId and addr_district_id=areaId);
+    end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getAreaSalesAmount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getAreaSalesAmount`(areaId char(8),areaType int, time char(19)) RETURNS char(45) CHARSET utf8
+BEGIN
+	if areaType=1 then
+		RETURN(select ifnull(round(sum(money),2),0) from pay where substr(orderId,1,14) >= replace(replace(replace(time,'-',''),':',''),' ','') and status=1 and uid in (SELECT uid FROM XXXX.user where addr_province_id=areaId));
+    end if;
+    if areaType=2 then
+		RETURN(select ifnull(round(sum(money),2),0) from pay where substr(orderId,1,14) >= replace(replace(replace(time,'-',''),':',''),' ','') and status=1 and uid in (SELECT uid FROM XXXX.user where addr_city_id=areaId));
+    end if;
+    if areaType=3 then
+		RETURN(select ifnull(round(sum(money),2),0) from pay where substr(orderId,1,14) >= replace(replace(replace(time,'-',''),':',''),' ','') and status=1 and uid in (SELECT uid FROM XXXX.user where addr_district_id=areaId));
+    end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getUserSuccessOrderNum` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getUserSuccessOrderNum`(_uid char(11)) RETURNS char(11) CHARSET latin1
+BEGIN  
+    RETURN(SELECT count(status) FROM pay where uid=_uid and status=1);  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getUserSuccessOrderSumMoney` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getUserSuccessOrderSumMoney`(_uid char(11)) RETURNS char(11) CHARSET latin1
+BEGIN  
+    RETURN(SELECT  ifnull(round(sum(money),2),0) FROM XXXX.pay where uid=_uid and status=1);  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getUserSuccessOrderSumMoneyThisMonth` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getUserSuccessOrderSumMoneyThisMonth`(_uid char(11)) RETURNS char(11) CHARSET latin1
+BEGIN  
+    RETURN(SELECT  ifnull(round(sum(money),2),0) FROM XXXX.pay where substr(orderId,1,6)=date_format(now(),'%Y%m') and uid=_uid and status=1);  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getUserSuccessOrderSumMoneyToday` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getUserSuccessOrderSumMoneyToday`(_uid char(11)) RETURNS char(11) CHARSET latin1
+BEGIN  
+    RETURN(SELECT  ifnull(round(sum(money),2),0) FROM XXXX.pay where substr(orderId,1,8)=date_format(now(),'%Y%m%d') and uid=_uid and status=1);  
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getVipCondition` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getVipCondition`(_vipId char(2)) RETURNS char(128) CHARSET utf8
+BEGIN
+	RETURN(SELECT `condition` FROM XXXX.vip where vipId=_vipId);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getVipLevel` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getVipLevel`(_vipId char(2)) RETURNS char(45) CHARSET utf8
+BEGIN
+	RETURN(SELECT `level` FROM XXXX.vip where vipId=_vipId);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `getVipLongRight` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` FUNCTION `getVipLongRight`(_vipId char(2)) RETURNS char(128) CHARSET utf8
+BEGIN
+	RETURN(SELECT `longRight` FROM XXXX.vip where vipId=_vipId);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `change_invalid_order_status` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`XXXXXXX`@`%` PROCEDURE `change_invalid_order_status`()
+begin
+        declare done int default false;
+        declare _orderId char(45) default null;
+        
+		declare cur1 cursor for  SELECT orderId from `order` 
+        where status=0 and TIMESTAMPDIFF(SECOND,substr(orderId, 1, 14), concat(date_format(now(),'%Y%m%d%H%i%s'))) >=300;
+		open cur1;
+		read_loop: loop
+			fetch cur1 into _orderId;
+			update `order` set status=4 where orderId=_orderId and status=0;
+			if done then
+				leave read_loop;
+			end if;
+		end loop;
+		close cur1;
+		set done = false; 
+
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-01-29  3:48:08
